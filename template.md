@@ -1,6 +1,49 @@
-# Spec & Evals Driven Agent Development (SEDAD) Template
+---
+# This YAML front-matter defines the schema for the SEDAD V1 Gold Standard template.
+# agent-oz reads this configuration to parse, validate, and shard any spec
+# that adheres to this standard.
 
-# Part 1 ▪ The Vision & Philosophy
+name: "sedad-gold-v1"
+version: "1.0.0"
+
+# All of these top-level sections are required for a spec to be considered compliant.
+# The `audit` command will check for their presence.
+required_sections:
+  - Intent
+  - Behavior
+  - Contracts
+  - Evaluation Plan
+  - Observability
+
+# This map allows developers to use common synonyms for section headings in their
+# specs. agent-oz will normalize them to the canonical key (e.g., "Goals" -> "Intent").
+synonyms:
+  Intent: ["Intent", "Objective", "Goals", "Purpose", "Problem Narrative"]
+  Behavior: ["Behavior", "Behaviour", "Capabilities", "Functional Requirements"]
+  Contracts: ["System Architecture & Data Contracts", "Contracts", "Architecture", "Schemas"]
+  Evaluation Plan: ["Evaluation Plan", "Evals", "Quality Gates", "Testing Strategy"]
+  Observability: ["Observability", "Traces", "Logging", "Monitoring"]
+
+# This section defines the grammar and minimum requirements for a single,
+# atomic capability clause within the "Behavior" section.
+clause:
+  # A regex to identify the start of a new capability.
+  id_regex: "^## \\^cap-\\d{2,}"
+
+  # A list of required sub-headings or content that must exist within each
+  # capability clause for it to be classified as 'ready' for a Task Card.
+  # The `audit` and `next` commands use this to gate quality.
+  # Cardinality can be specified, e.g., Rules(3..7).
+  needs:
+    - "Inputs"
+    - "Outputs"
+    - "Rules(3..7)" # Requires 3 to 7 rules to be present.
+    - "Example(GIVEN/WHEN/THEN>=1)" # Requires at least one G/W/T example.
+---
+
+# Part 1 — Intent
+
+# Spec & Evals Driven Agent Development (SEDAD) Template
 
 ## **1.1 Objective**
 
